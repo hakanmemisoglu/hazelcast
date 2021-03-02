@@ -28,7 +28,9 @@ import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
+import java.net.NetworkInterface;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -149,6 +151,13 @@ public class MulticastDeserializationTest {
             byte[] packetData = bbuf.array();
             DatagramPacket packet = new DatagramPacket(packetData, packetData.length, group, MULTICAST_PORT);
             multicastSocket.send(packet);
+
+            NetworkInterface nif = multicastSocket.getNetworkInterface();
+            System.out.println("NIF: " + nif);
+            System.out.println();
+            System.out.println("NIF ADDRESSES:\n" + Arrays.toString(nif.getInterfaceAddresses().toArray()));
+
+
             multicastSocket.leaveGroup(group);
         } finally {
             if (multicastSocket != null) {
