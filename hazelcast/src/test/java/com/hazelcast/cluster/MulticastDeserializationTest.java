@@ -135,7 +135,7 @@ public class MulticastDeserializationTest {
         MulticastSocket multicastSocket = null;
         try {
             multicastSocket = new MulticastSocket(MULTICAST_PORT);
-            multicastSocket.setLoopbackMode(true);
+            //multicastSocket.setLoopbackMode(true);
             multicastSocket.setNetworkInterface(NetworkInterface.getByName("127.0.0.1"));
             //multicastSocket.setInterface(InetAddress.getByName("127.0.0.1"));
             multicastSocket.setTimeToLive(MULTICAST_TTL);
