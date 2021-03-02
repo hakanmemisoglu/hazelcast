@@ -135,12 +135,13 @@ public class MulticastDeserializationTest {
         MulticastSocket multicastSocket = null;
         try {
             multicastSocket = new MulticastSocket(MULTICAST_PORT);
+            multicastSocket.setLoopbackMode(true);
             multicastSocket.setNetworkInterface(NetworkInterface.getByName("127.0.0.1"));
             //multicastSocket.setInterface(InetAddress.getByName("127.0.0.1"));
             multicastSocket.setTimeToLive(MULTICAST_TTL);
             InetAddress group = InetAddress.getByName(MULTICAST_GROUP);
-            multicastSocket.joinGroup(new InetSocketAddress(MULTICAST_GROUP, MULTICAST_PORT), NetworkInterface.getByName("127.0.0.1"));
-            //multicastSocket.joinGroup(group);
+            //multicastSocket.joinGroup(new InetSocketAddress(MULTICAST_GROUP, MULTICAST_PORT), NetworkInterface.getByName("127.0.0.1"));
+            multicastSocket.joinGroup(group);
             int msgSize = data.length;
 
             ByteBuffer bbuf = ByteBuffer.allocate(1 + 4 + msgSize);
@@ -149,7 +150,12 @@ public class MulticastDeserializationTest {
             bbuf.put(data);
             byte[] packetData = bbuf.array();
             DatagramPacket packet = new DatagramPacket(packetData, packetData.length, group, MULTICAST_PORT);
+            System.out.println("SENDING PACKET");
             multicastSocket.send(packet);
+            System.out.println("SENT PACKET");
+
+            InetAddress interAddr = multicastSocket.getInterface();
+            System.out.println("INTERFACE ADDRESS: " + interAddr);
 
             NetworkInterface nif = multicastSocket.getNetworkInterface();
 
@@ -157,8 +163,8 @@ public class MulticastDeserializationTest {
             System.out.println();
             System.out.println("NIF ADDRESSES:\n" + Arrays.toString(nif.getInterfaceAddresses().toArray()));
 
-            multicastSocket.leaveGroup(new InetSocketAddress(MULTICAST_GROUP, MULTICAST_PORT), NetworkInterface.getByName("127.0.0.1"));
-            //multicastSocket.leaveGroup(group);
+            //multicastSocket.leaveGroup(new InetSocketAddress(MULTICAST_GROUP, MULTICAST_PORT), NetworkInterface.getByName("127.0.0.1"));
+            multicastSocket.leaveGroup(group);
         } finally {
             if (multicastSocket != null) {
                 multicastSocket.close();
