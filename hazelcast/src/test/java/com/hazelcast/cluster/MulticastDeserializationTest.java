@@ -25,10 +25,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.net.DatagramPacket;
-import java.net.InetAddress;
-import java.net.MulticastSocket;
-import java.net.NetworkInterface;
+import java.net.*;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
@@ -138,10 +135,12 @@ public class MulticastDeserializationTest {
         MulticastSocket multicastSocket = null;
         try {
             multicastSocket = new MulticastSocket(MULTICAST_PORT);
-            multicastSocket.setInterface(InetAddress.getByName("127.0.0.1"));
+            multicastSocket.setNetworkInterface(NetworkInterface.getByName("127.0.0.1"));
+            //multicastSocket.setInterface(InetAddress.getByName("127.0.0.1"));
             multicastSocket.setTimeToLive(MULTICAST_TTL);
             InetAddress group = InetAddress.getByName(MULTICAST_GROUP);
-            multicastSocket.joinGroup(group);
+            multicastSocket.joinGroup(new InetSocketAddress(MULTICAST_GROUP, MULTICAST_PORT), NetworkInterface.getByName("127.0.0.1"));
+            //multicastSocket.joinGroup(group);
             int msgSize = data.length;
 
             ByteBuffer bbuf = ByteBuffer.allocate(1 + 4 + msgSize);
@@ -153,12 +152,13 @@ public class MulticastDeserializationTest {
             multicastSocket.send(packet);
 
             NetworkInterface nif = multicastSocket.getNetworkInterface();
+
             System.out.println("NIF: " + nif);
             System.out.println();
             System.out.println("NIF ADDRESSES:\n" + Arrays.toString(nif.getInterfaceAddresses().toArray()));
 
-
-            multicastSocket.leaveGroup(group);
+            multicastSocket.leaveGroup(new InetSocketAddress(MULTICAST_GROUP, MULTICAST_PORT), NetworkInterface.getByName("127.0.0.1"));
+            //multicastSocket.leaveGroup(group);
         } finally {
             if (multicastSocket != null) {
                 multicastSocket.close();
