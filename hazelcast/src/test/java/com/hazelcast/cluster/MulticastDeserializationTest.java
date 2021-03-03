@@ -159,10 +159,10 @@ public class MulticastDeserializationTest {
             System.out.println("INTERFACE ADDRESS: " + interAddr);
 
             NetworkInterface nif = multicastSocket.getNetworkInterface();
-
-            System.out.println("NIF: " + nif);
-            System.out.println();
-            System.out.println("NIF ADDRESSES:\n" + Arrays.toString(nif.getInterfaceAddresses().toArray()));
+//
+//            System.out.println("NIF: " + nif);
+//            System.out.println();
+//            System.out.println("NIF ADDRESSES:\n" + Arrays.toString(nif.getInterfaceAddresses().toArray()));
 
             //multicastSocket.leaveGroup(new InetSocketAddress(MULTICAST_GROUP, MULTICAST_PORT), NetworkInterface.getByName("127.0.0.1"));
             multicastSocket.leaveGroup(group);
