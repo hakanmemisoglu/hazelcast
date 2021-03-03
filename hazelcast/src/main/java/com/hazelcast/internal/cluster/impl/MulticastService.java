@@ -117,8 +117,9 @@ public final class MulticastService implements Runnable {
             // bind to receive interface
             multicastSocket.bind(new InetSocketAddress(multicastConfig.getMulticastPort()));
             System.out.println("SERVICE BOUND TO: " + new InetSocketAddress(multicastConfig.getMulticastPort()));
-            multicastSocket.setTimeToLive(multicastConfig.getMulticastTimeToLive() + 128);
-            System.out.println("SERVICE TTL TO: " + multicastConfig.getMulticastTimeToLive());
+            //multicastSocket.setTimeToLive(multicastConfig.getMulticastTimeToLive());
+            multicastSocket.setTimeToLive(128);
+            System.out.println("SERVICE TTL TO: " + multicastSocket.getTimeToLive());
             try {
                 // multicastSocket.setInterface(bindAddress.getInetAddress());
                 System.out.println("SERVICE INTERFACE: " + multicastSocket.getInterface());
