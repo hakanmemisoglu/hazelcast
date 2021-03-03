@@ -116,10 +116,14 @@ public final class MulticastService implements Runnable {
             multicastSocket.setReuseAddress(true);
             // bind to receive interface
             multicastSocket.bind(new InetSocketAddress(multicastConfig.getMulticastPort()));
+            System.out.println("SERVICE BOUND TO: " + new InetSocketAddress(multicastConfig.getMulticastPort()));
             multicastSocket.setTimeToLive(multicastConfig.getMulticastTimeToLive());
+            System.out.println("SERVICE TTL TO: " + multicastConfig.getMulticastTimeToLive());
             try {
                 multicastSocket.setInterface(bindAddress.getInetAddress());
+                System.out.println("SERVICE INTERFACE: " + multicastSocket.getInterface());
                 if (bindAddress.getInetAddress().isLoopbackAddress()) {
+                    System.out.println("SERVICE IS LOOPBACK");
                     // the parameter of the setLoopbackMode method is "disable: true to disable the LoopbackMode"!
                     multicastSocket.setLoopbackMode(! multicastConfig.isLoopbackModeEnabled());
                     if (multicastSocket.getLoopbackMode()) {
@@ -140,9 +144,11 @@ public final class MulticastService implements Runnable {
             }
             multicastConfig.setMulticastGroup(multicastGroup);
             multicastSocket.joinGroup(InetAddress.getByName(multicastGroup));
+            System.out.println("SERVICE JOIN GROUP: " + InetAddress.getByName(multicastGroup));
             multicastSocket.setSoTimeout(SOCKET_TIMEOUT);
             mcService = new MulticastService(node, multicastSocket);
             mcService.addMulticastListener(new NodeMulticastListener(node));
+
         } catch (Exception e) {
             logger.severe(e);
             // fail-fast if multicast is explicitly enabled (i.e. autodiscovery is not used)
@@ -222,6 +228,7 @@ public final class MulticastService implements Runnable {
     private JoinMessage receive() {
         try {
             try {
+                System.out.println("SERVICE RECEIVE STARTS");
                 System.out.println("SERVICE LOOPBACK MODE: " + multicastSocket.getLoopbackMode());
                 multicastSocket.receive(datagramPacketReceive);
             } catch (IOException ignore) {
