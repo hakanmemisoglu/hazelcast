@@ -136,12 +136,9 @@ public class MulticastDeserializationTest {
         try {
             multicastSocket = new MulticastSocket(MULTICAST_PORT);
             // multicastSocket.setInterface(InetAddress.getByName("127.0.0.1"));
-            multicastSocket.setTimeToLive(MULTICAST_TTL + 128);
-            System.out.println("LOOPBACK MODE: " +  multicastSocket.getLoopbackMode());
+            multicastSocket.setTimeToLive(128);
             multicastSocket.setLoopbackMode(false);
-            System.out.println("LOOPBACK MODE: " + multicastSocket.getLoopbackMode());
             InetAddress group = InetAddress.getByName(MULTICAST_GROUP);
-            //multicastSocket.joinGroup(new InetSocketAddress(MULTICAST_GROUP, MULTICAST_PORT), NetworkInterface.getByName("127.0.0.1"));
             multicastSocket.joinGroup(group);
             int msgSize = data.length;
 
@@ -151,20 +148,8 @@ public class MulticastDeserializationTest {
             bbuf.put(data);
             byte[] packetData = bbuf.array();
             DatagramPacket packet = new DatagramPacket(packetData, packetData.length, group, MULTICAST_PORT);
-            System.out.println("SENDING PACKET");
             multicastSocket.send(packet);
-            System.out.println("SENT PACKET");
 
-            InetAddress interAddr = multicastSocket.getInterface();
-            System.out.println("INTERFACE ADDRESS: " + interAddr);
-
-            NetworkInterface nif = multicastSocket.getNetworkInterface();
-//
-//            System.out.println("NIF: " + nif);
-//            System.out.println();
-//            System.out.println("NIF ADDRESSES:\n" + Arrays.toString(nif.getInterfaceAddresses().toArray()));
-
-            //multicastSocket.leaveGroup(new InetSocketAddress(MULTICAST_GROUP, MULTICAST_PORT), NetworkInterface.getByName("127.0.0.1"));
             multicastSocket.leaveGroup(group);
         } finally {
             if (multicastSocket != null) {
