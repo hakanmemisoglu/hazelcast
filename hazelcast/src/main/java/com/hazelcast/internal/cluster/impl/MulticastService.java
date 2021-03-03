@@ -124,10 +124,9 @@ public final class MulticastService implements Runnable {
                 // multicastSocket.setInterface(bindAddress.getInetAddress());
                 System.out.println("SERVICE INTERFACE: " + multicastSocket.getInterface());
                 if (bindAddress.getInetAddress().isLoopbackAddress()) {
-                    System.out.println("SERVICE IS LOOPBACK");
                     // the parameter of the setLoopbackMode method is "disable: true to disable the LoopbackMode"!
                     //multicastSocket.setLoopbackMode(! multicastConfig.isLoopbackModeEnabled());
-                    multicastSocket.setLoopbackMode(true);
+                    multicastSocket.setLoopbackMode(false);
                     if (multicastSocket.getLoopbackMode()) {
                         logger.warning("Hazelcast is bound to " + bindAddress.getHost() + " and loop-back mode is "
                                 + "disabled. This could cause multicast auto-discovery issues "
