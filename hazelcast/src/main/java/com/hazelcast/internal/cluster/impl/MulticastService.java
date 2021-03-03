@@ -222,8 +222,10 @@ public final class MulticastService implements Runnable {
     private JoinMessage receive() {
         try {
             try {
+                System.out.println("SERVICE LOOPBACK MODE: " + multicastSocket.getLoopbackMode());
                 multicastSocket.receive(datagramPacketReceive);
             } catch (IOException ignore) {
+                System.out.println("SERVICE RECEIVE ERROR: " + ignore);
                 return null;
             }
             try {
