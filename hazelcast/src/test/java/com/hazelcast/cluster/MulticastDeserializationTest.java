@@ -139,6 +139,7 @@ public class MulticastDeserializationTest {
             //multicastSocket.setNetworkInterface(NetworkInterface.getByName("127.0.0.1"));
             multicastSocket.setInterface(InetAddress.getByName("127.0.0.1"));
             multicastSocket.setTimeToLive(MULTICAST_TTL);
+            multicastSocket.setLoopbackMode(false);
             InetAddress group = InetAddress.getByName(MULTICAST_GROUP);
             //multicastSocket.joinGroup(new InetSocketAddress(MULTICAST_GROUP, MULTICAST_PORT), NetworkInterface.getByName("127.0.0.1"));
             multicastSocket.joinGroup(group);
