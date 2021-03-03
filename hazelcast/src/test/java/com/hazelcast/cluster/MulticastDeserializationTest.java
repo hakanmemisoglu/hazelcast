@@ -25,9 +25,10 @@ import static org.junit.Assert.assertTrue;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.net.*;
+import java.net.DatagramPacket;
+import java.net.InetAddress;
+import java.net.MulticastSocket;
 import java.nio.ByteBuffer;
-import java.util.Arrays;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -149,7 +150,6 @@ public class MulticastDeserializationTest {
             byte[] packetData = bbuf.array();
             DatagramPacket packet = new DatagramPacket(packetData, packetData.length, group, MULTICAST_PORT);
             multicastSocket.send(packet);
-
             multicastSocket.leaveGroup(group);
         } finally {
             if (multicastSocket != null) {

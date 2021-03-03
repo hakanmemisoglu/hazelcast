@@ -145,7 +145,6 @@ public final class MulticastService implements Runnable {
             multicastSocket.setSoTimeout(SOCKET_TIMEOUT);
             mcService = new MulticastService(node, multicastSocket);
             mcService.addMulticastListener(new NodeMulticastListener(node));
-
         } catch (Exception e) {
             logger.severe(e);
             // fail-fast if multicast is explicitly enabled (i.e. autodiscovery is not used)
